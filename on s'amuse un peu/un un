@@ -1,0 +1,97 @@
+✅ EXERCISE 01 – ex_01/ex_01.sql
+Afficher toutes les tables de la base de données :
+
+sql
+Copier
+Modifier
+SHOW TABLES;
+✅ EXERCISE 02 – ex_02/ex_02.sql
+Afficher la description de la table movies :
+
+sql
+Copier
+Modifier
+DESCRIBE movies;
+✅ EXERCISE 03 – ex_03/ex_03.sql
+Afficher la date actuelle au format YYYY-MM-DD :
+
+sql
+Copier
+Modifier
+SELECT DATE_FORMAT(CURDATE(), '%Y-%m-%d') AS `Date`;
+✅ EXERCISE 04 – ex_04/ex_04.sql
+Afficher le titre et le résumé des films, triés par ordre alphabétique du titre :
+
+sql
+Copier
+Modifier
+SELECT title, summary
+FROM movies
+ORDER BY title ASC;
+✅ EXERCISE 05 – ex_05/ex_05.sql
+Afficher les noms des genres en majuscules :
+
+sql
+Copier
+Modifier
+SELECT UPPER(name) AS `NAME OF ALL THE GENRES`
+FROM genres;
+✅ EXERCISE 06 – ex_06/ex_06.sql
+Afficher les titres des 42 derniers films, triés par ID décroissant :
+
+sql
+Copier
+Modifier
+SELECT title AS `Title of the last 42 movies`
+FROM movies
+ORDER BY id DESC
+LIMIT 42;
+✅ EXERCISE 07 – ex_07/ex_07.sql
+Afficher le nom et le prix de l’abonnement le plus cher :
+
+sql
+Copier
+Modifier
+SELECT name AS `Name of the most expensive subscription`, price AS `Price`
+FROM subscriptions
+ORDER BY price DESC
+LIMIT 1;
+✅ EXERCISE 08 – ex_08/ex_08.sql
+Afficher les titres des films dont le genre est "action" ou "romance" :
+
+sql
+Copier
+Modifier
+SELECT title
+FROM movies
+JOIN genres ON movies.genre_id = genres.id
+WHERE LOWER(genres.name) IN ('action', 'romance');
+(Adapté selon une relation habituelle entre movies et genres)
+
+✅ EXERCISE 09 – ex_09/ex_09.sql
+Afficher la durée du film le plus court (en minutes), en excluant les valeurs NULL ou 0 :
+
+sql
+Copier
+Modifier
+SELECT MIN(duration) AS `Duration of the shortest movie`
+FROM movies
+WHERE duration IS NOT NULL AND duration > 0;
+✅ EXERCISE 10 – ex_10/ex_10.sql
+Afficher les ID des films dont le titre contient "tard" (insensible à la casse) :
+
+sql
+Copier
+Modifier
+SELECT id AS `Identifier`
+FROM movies
+WHERE LOWER(title) LIKE '%tard%';
+✅ EXERCISE 11 – ex_11/ex_11.sql
+Afficher le nombre de films dont le titre se termine par "tion" (insensible à la casse) :
+
+sql
+Copier
+Modifier
+SELECT COUNT(*) AS `Number of movies ending with"tion"`
+FROM movies
+WHERE LOWER(title) LIKE '%tion';
