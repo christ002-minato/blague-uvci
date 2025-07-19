@@ -1,0 +1,163 @@
+✅ EXERCISE 18 – ex_18/ex_18.sql
+Afficher le nom complet formaté (Nom-Prénom), avec majuscules sur les premières lettres, et triés du plus jeune au plus âgé.
+
+sql
+Copier
+Modifier
+SELECT 
+    CONCAT(
+        UPPER(LEFT(lastname, 1)), LOWER(SUBSTRING(lastname, 2)),
+        '-',
+        UPPER(LEFT(firstname, 1)), LOWER(SUBSTRING(firstname, 2))
+    ) AS `Full name`
+FROM profiles
+ORDER BY birthdate DESC;
+⚠️ On suppose qu’il y a une colonne birthdate dans profiles (type DATE) pour trier selon l'âge.
+
+✅ EXERCISE 19 – ex_19/ex_19.sql
+Afficher les titres des films dont l’ID est dans la liste donnée.
+
+sql
+Copier
+Modifier
+SELECT title AS `Movie title`
+FROM movies
+WHERE id IN (21, 87, 263, 413, 633);
+✅ EXERCISE 20 – ex_20/ex_20.sql
+Afficher le nombre de films produits par année, année ≠ 0, tri décroissant.
+
+sql
+Copier
+Modifier
+SELECT 
+    COUNT(*) AS `Number of movies`, 
+    production_year AS `Year of production`
+FROM movies
+WHERE production_year IS NOT NULL AND production_year != 0
+GROUP BY production_year
+ORDER BY production_year DESC;
+Souhaites-tu maintenant un dossier ZIP avec tous les .sql déjà prêts pour soumission ?
+
+
+
+
+
+
+
+
+Vous avez dit :
+explications détaillées de comment reproduire l'exercice 
+
+
+ChatGPT a dit :
+Voici des explications détaillées pour bien comprendre comment reproduire les exercices 18, 19 et 20, avec une logique pas à pas pour t’aider à progresser en SQL.
+
+✅ EXERCISE 18 : ex_18/ex_18.sql
+🎯 Objectif :
+Afficher les membres de la table profiles avec :
+
+Format : Nom-Prenom (ex: Smith-John)
+
+Avec majuscule au début du prénom et nom
+
+Trier du plus jeune au plus âgé
+
+Nom de la colonne : Full name
+
+🧠 Étapes de réflexion :
+Tu dois combiner deux colonnes : lastname et firstname
+→ Utilise CONCAT() pour les joindre avec un - entre les deux.
+
+Chaque mot doit avoir la 1ère lettre en majuscule, le reste en minuscule.
+→ Pour ça, tu peux faire :
+
+UPPER(LEFT(nom, 1)) → première lettre en majuscule
+
+LOWER(SUBSTRING(nom, 2)) → le reste en minuscule
+
+Pour trier du plus jeune au plus âgé, il faut utiliser une colonne birthdate
+→ ORDER BY birthdate DESC (plus récent en haut)
+
+✅ Requête finale :
+sql
+Copier
+Modifier
+SELECT 
+    CONCAT(
+        UPPER(LEFT(lastname, 1)), LOWER(SUBSTRING(lastname, 2)),
+        '-',
+        UPPER(LEFT(firstname, 1)), LOWER(SUBSTRING(firstname, 2))
+    ) AS `Full name`
+FROM profiles
+ORDER BY birthdate DESC;
+✅ EXERCISE 19 : ex_19/ex_19.sql
+🎯 Objectif :
+Afficher les titres de certains films précis :
+
+Ceux dont les id sont : 21, 87, 263, 413, 633
+
+Nom de colonne : Movie title
+
+🧠 Étapes de réflexion :
+Tu veux filtrer certains IDs spécifiques.
+→ Utilise WHERE id IN (...)
+
+Tu veux afficher les titres → donc la colonne title.
+
+✅ Requête finale :
+sql
+Copier
+Modifier
+SELECT title AS `Movie title`
+FROM movies
+WHERE id IN (21, 87, 263, 413, 633);
+✅ EXERCISE 20 : ex_20/ex_20.sql
+🎯 Objectif :
+Afficher le nombre de films produits par année, sauf pour les années = 0.
+
+Afficher :
+
+nombre de films : Number of movies
+
+année de production : Year of production
+
+Trier de l'année la plus récente à la plus ancienne
+
+🧠 Étapes de réflexion :
+Il faut compter le nombre de films par année → GROUP BY production_year avec COUNT(*)
+
+Exclure les années incorrectes → WHERE production_year != 0
+
+Trier du plus récent au plus ancien → ORDER BY production_year DESC
+
+✅ Requête finale :
+sql
+Copier
+Modifier
+SELECT 
+    COUNT(*) AS `Number of movies`, 
+    production_year AS `Year of production`
+FROM movies
+WHERE production_year IS NOT NULL AND production_year != 0
+GROUP BY production_year
+ORDER BY production_year DESC;
+📁 Comment reproduire sur ton PC ou PHPMyAdmin
+Connexion à MySQL
+
+Par terminal : mysql -u root -p
+
+Ou via un outil : phpMyAdmin, DBeaver, etc.
+
+Choisir la base de données :
+
+sql
+Copier
+Modifier
+USE nom_de_ta_base;
+Créer un fichier .sql :
+
+Exemple : ex_18.sql
+
+Écris la requête dedans
+
+Tu peux tester en copiant la requête directement dans phpMyAdmin > SQL
