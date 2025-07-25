@@ -1,40 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="test.css">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Page boutique - Living room" />
+  <title>Living room – Boutique</title>
+
+  
+  
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
- <header>
-    <nav>
-        
-        <div>
-            
-            <ul>
-                <div class="logo">
-                <a href="#"><img src="Logo.png" alt="Logo"></a>
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="logo">
+                <img src="Logo.png" alt="Logo">
             </div>
-                <li><a href="#">HOME</a></li>
-                <li><a href="#">SHOP</a></li>
-                <li><a href="#">MAGAZINE</a></li>
-            </ul>
-        </div>
-        <div>
-            <ul>
-                <li><a href="#"><img src="Cart Button.png" alt="Cart Button"></a></li>
-                <li><a href="#">LOGIN</a></li>
-            </ul>
-        </div>
+
+    <a href="#" class="logo" aria-label="Accueil (Logo)">
+      <!-- Mets ton logo ici -->
+      LOGO
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <ul class="nav-list">
+        <li><a href="#">HOME</a></li>
+        <li><a href="#">SHOP</a></li>
+        <li><a href="#">MAGAZINE</a></li>
+      </ul>
     </nav>
-    <section class="search-bar">
-        <img src="Search.png" alt="recherche">
-        <input type="text" placeholder="living room">
-        <span class="powered">Powered by Algolia</span>
-        <img src="Sajari Logo.png" alt="">
+
+    <div class="header-right">
+      <a href="#" class="login-link">LOGIN</a>
+      <a href="#" class="cart" aria-label="Panier">🛒</a>
+    </div>
+  </header>
+
+  <!-- ===== BARRE DE RECHERCHE + TRI ===== -->
+  <section class="topbar" aria-labelledby="search-title">
+    <div class="search">
+      <label for="search-input" id="search-title" class="visually-hidden">Recherche</label>
+      <span class="search-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="living room" />
+      <span class="powered">Powered by Algolia</span>
+      <button class="settings" aria-label="Réglages">⚙️</button>
+    </div>
+
+    <div class="sort">
+      <label for="sort-select">Best match</label>
+      <select id="sort-select">
+        <option>Best match</option>
+        <option>Price: low to high</option>
+        <option>Price: high to low</option>
+        <option>Newest</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <main class="layout">
+    <!-- ==== FILTRES ==== -->
+    <aside class="filters" aria-label="Filtres">
+      <h2 class="filters-title">FILTER BY</h2>
+
+      <details class="filter">
+        <summary>Collection</summary>
+        <ul class="filter-list">
+          <li><label><input type="checkbox" /> Modern</label></li>
+          <li><label><input type="checkbox" /> Classic</label></li>
+        </ul>
+      </details>
+
+      <details class="filter">
+        <summary>Color</summary>
+        <ul class="filter-list">
+          <li><label><input type="checkbox" /> White</label></li>
+          <li><label><input type="checkbox" /> Black</label></li>
+        </ul>
+      </details>
+
+      <details class="filter">
+        <summary>Category</summary>
+        <ul class="filter-list">
+          <li><label><input type="checkbox" /> Chair</label></li>
+          <li><label><input type="checkbox" /> Shelves</label></li>
+        </ul>
+      </details>
+
+      <details class="filter">
+        <summary>Price Range</summary>
+        <div class="price-range">
+          <span>$0</span>
+          <input type="range" min="0" max="10000" />
+          <span>$10,000+</span>
+        </div>
+      </details>
+    </aside>
+
+    <!-- ==== GRILLE PRODUITS ==== -->
+    <section class="products" aria-label="Liste des produits">
+      <!-- Une carte produit = 1 .card -->
+      <article class="card">
+        <div class="thumb">
+          <img src="assets/img/product-1.jpg" alt="Coombes" />
+        </div>
+        <div class="card-info">
+          <div class="title-price">
+            <h3 class="title">Coombes</h3>
+            <span class="price">$2,600</span>
+          </div>
+          <p class="category">Lounge</p>
+          <div class="meta">
+          <span class="stars" aria-label="5 étoiles">★★★★★</span>
+            <button class="add-to-cart" aria-label="Ajouter au panier">🛒</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Duplique les cartes ci-dessous pour tous tes produits -->
+      <article class="card">
+        <div class="thumb">
+          <img src="assets/img/product-2.jpg" alt="Keeve Set" />
+        </div>
+        <div class="card-info">
+          <div class="title-price">
+            <h3 class="title">Keeve Set</h3>
+            <span class="price">$590</span>
+          </div>
+          <p class="category">Table & Chairs</p>
+          <div class="meta">
+            <span class="stars" aria-label="5 étoiles">★★★★★</span>
+            <button class="add-to-cart" aria-label="Ajouter au panier">🛒</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ... autres produits ... -->
     </section>
- </header>
- 
+  </main>
+
+  <!-- ===== PAGINATION ===== -->
+  <nav class="pagination" aria-label="Pagination">
+    <ul>
+      <li><a class="active" href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><span>…</span></li>
+      <li><a href="#">10</a></li>
+      <li><a href="#" aria-label="Page suivante">&gt;</a></li>
+    </ul>
+  </nav>
 </body>
 </html>
