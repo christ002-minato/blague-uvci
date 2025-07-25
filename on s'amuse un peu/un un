@@ -4,7 +4,46 @@
 *::after {
   box-sizing: border-box;
 }
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="test.css">
+    <title>Document</title>
+</head>
+<body>
+ <header>
+    <nav>
+        
+        <div>
+            
+            <ul>
+                <div class="logo">
+                <a href="#"><img src="Logo.png" alt="Logo"></a>
+            </div>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">SHOP</a></li>
+                <li><a href="#">MAGAZINE</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <li><a href="#"><img src="Cart Button.png" alt="Cart Button"></a></li>
+                <li><a href="#">LOGIN</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="search-bar">
+        <img src="Search.png" alt="recherche">
+        <input type="text" placeholder="living room">
+        <span class="powered">Powered by Algolia</span>
+        <img src="Sajari Logo.png" alt="">
+    </section>
+ </header>
+ 
+</body>
+</html>
 html {
   font-size: 16px;
 }
