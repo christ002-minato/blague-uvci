@@ -11,25 +11,29 @@ $productManager = new Product();
 if (isset($_POST['submit-user'])) {
     $username = $_POST['user-name'];
     $email = $_POST['user-email'];
-
-if (isset($_POST['user-admin'])) {
-    $isAdmin = 1;
-} else {
-    $isAdmin = 0;
-}
-    
+    if (isset($_POST['user-admin'])) {
+        $isAdmin = 1;
+    } else {
+        $isAdmin = 0;
+    }
     if ($userManager->emailExists($email)) {
         $userError = "Cet email est déjà utilisé.";
     } else {
-        if (method_exists($userManager, 'createUser')) {
-            $userManager->createUser($username, $email,$passw, $isAdmin);
+        if (isset($_POST['user-id']) && !empty($_POST['user-id'])) {
+            $userManager->updateUser($_POST['user-id'], $username, $email, $isAdmin);
+        } else {
+            if (method_exists($userManager, 'createUser')) {
+                $userManager->createUser($username, $email, 'defaultPassword', $isAdmin);
+            }
         }
     }
 }
 
-if (isset($_POST['delete-user'])) {
-    $email = $_POST['user-email'];
-    $userManager->deleteUser($email);
+if (isset($_GET['delete-user'])) {
+    $userId = $_GET['delete-user'];
+    if (!empty($userId)) {
+        $userManager->deleteUser($userId);
+    }
 }
 
 //  pour les produits
@@ -38,23 +42,29 @@ if (isset($_POST['bt_add'])) {
     $category = $_POST['product_categorie'];
     $description = $_POST['product_desc'];
     $price = $_POST['product_price'];
-    
-    //  l'image
     $image = '';
-    if (isset($_FILES['product_image'])) {
+    if (isset($_FILES['product_image']) && !empty($_FILES['product_image']['name'])) {
         $targetDir = "uploads/";
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
         $targetFile = $targetDir . basename($_FILES['product_image']['name']);
         if (move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile)) {
             $image = $targetFile;
         }
     }
-    
-    $productManager->createProduct($name, $price, $category, $description, $image);
+    if (isset($_POST['product-id']) && !empty($_POST['product-id'])) {
+        $productManager->updateProduct($_POST['product-id'], $name, $price, $category, $description, $image);
+    } else {
+        $productManager->createProduct($name, $price, $category, $description, $image);
+    }
 }
 
-if (isset($_POST['delete-product'])) {
-    $productId = $_POST['product-id-delete'];
-    $productManager->deleteProduct($productId);
+if (isset($_GET['delete-product'])) {
+    $productId = $_GET['delete-product'];
+    if (!empty($productId)) {
+        $productManager->deleteProduct($productId);
+    }
 }
 
 
@@ -358,4 +368,5 @@ if (method_exists($productManager, 'getProductsPaginated')) {
     </main>
 </body>
 </html>
+
 
