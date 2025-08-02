@@ -22,14 +22,14 @@ if (isset($_POST['user-admin'])) {
         $userError = "Cet email est déjà utilisé.";
     } else {
         if (method_exists($userManager, 'createUser')) {
-            $userManager->createUser($username, $email, 'defaultPassword', $isAdmin);
+            $userManager->createUser($username, $email,$passw, $isAdmin);
         }
     }
 }
 
 if (isset($_POST['delete-user'])) {
     $email = $_POST['user-email'];
-    $userManager->deleteUserByEmail($email);
+    $userManager->deleteUser($email);
 }
 
 //  pour les produits
@@ -59,7 +59,7 @@ if (isset($_POST['delete-product'])) {
 
 
 $usersPerPage = 5;
-$userPage = isset($_GET['user_page']) ? max(1, intval($_GET['user_page'])) : 1;
+$userPage = isset($_POST['user_page']) ? max(1, intval($_POST['user_page'])) : 1;
 $userOffset = ($userPage - 1) * $usersPerPage;
 
 if (method_exists($userManager, 'countAllUsers')) {
@@ -86,7 +86,7 @@ if (method_exists($userManager, 'getUsersPaginated')) {
 
 
 $productsPerPage = 5;
-$productPage = isset($_GET['product_page']) ? max(1, intval($_GET['product_page'])) : 1;
+$productPage = isset($_POST['product_page']) ? max(1, intval($_POST['product_page'])) : 1;
 $productOffset = ($productPage - 1) * $productsPerPage;
 
 if (method_exists($productManager, 'countAllProducts')) {
@@ -236,8 +236,8 @@ if (method_exists($productManager, 'getProductsPaginated')) {
                                 <td><?= htmlspecialchars($user['email']) ?></td>
                                 <td><?= $user['admin'] ? 'Yes' : 'No' ?></td>
                                 <td>
-                                    <a href='?edit-user=<?= $user['id'] ?>'>Edit</a> | 
-                                    <a href='?delete-user=<?= $user['id'] ?>' onclick='return confirm("Are you sure?")'>Delete</a>
+                                    <a href='?edit-user=<?= $user['email'] ?>'>Edit</a> | 
+                                    <a href='?delete-user=<?= $user['email'] ?>' onclick='return confirm("Are you sure?")'>Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -259,12 +259,12 @@ if (method_exists($productManager, 'getProductsPaginated')) {
 
         
         <section id='edit-user'>
-            <h2><?= isset($_GET['edit-user']) ? 'Edit' : 'Add' ?> User</h2>
+            <h2><?= isset($_POST['edit-user']) ? 'Edit' : 'Add' ?> User</h2>
             <form method='post'>
                 <?php
                 $editingUser = null;
-                if (isset($_GET['edit-user'])) {
-                    $editingUser = $userManager->getUserById($_GET['edit-user']);
+                if (isset($_POST['edit-user'])) {
+                    $editingUser = $userManager->getUserById($_POST['edit-user']);
                 }
                 ?>
                 <label>Name: <input type='text' name='user-name' value="<?= $editingUser ? htmlspecialchars($editingUser['username']) : '' ?>"></label><br>
@@ -329,12 +329,12 @@ if (method_exists($productManager, 'getProductsPaginated')) {
 
         
         <section id='add-product'>
-            <h2><?= isset($_GET['edit-product']) ? 'Edit' : 'Add' ?> Product</h2>
+            <h2><?= isset($_POST['edit-product']) ? 'Edit' : 'Add' ?> Product</h2>
             <form method='post' enctype='multipart/form-data'>
                 <?php
                 $editingProduct = null;
-                if (isset($_GET['edit-product'])) {
-                    $editingProduct = $productManager->getProductById($_GET['edit-product']);
+                if (isset($_POST['edit-product'])) {
+                    $editingProduct = $productManager->createProduct($name, $price, $category_id, $description = '', $image = '');
                 }
                 ?>
                 <input type='hidden' name='product-id' value="<?= $editingProduct ? $editingProduct['id'] : '' ?>">
@@ -358,3 +358,4 @@ if (method_exists($productManager, 'getProductsPaginated')) {
     </main>
 </body>
 </html>
+
