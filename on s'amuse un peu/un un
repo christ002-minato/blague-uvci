@@ -1,96 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>my_shop</title>
+ <script src='https://cdn.tailwindcss.com'></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
 
-<?php
-require_once "db_connect.php";
+  
+  <header class="bg-white shadow-md">
 
-class User {
-    private $conn;
 
-    public function __construct() {
-        $db = new Database();
-        $this->conn = $db->db_connect();
-    }
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
-    // Get all users
-    public function getAllUsers() {
-        $sql = "SELECT * FROM users";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Get user by ID
-    public function getUserById($id) {
-        $sql = "SELECT * FROM users WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // modif user
-    public function updateUser($id, $username, $email, $isAdmin) {
-        $sql = "UPDATE users SET username = :username, email = :email, admin = :admin WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
+                <button class=' bg-black  text-white font-bold  py-4 px-4 rounded-lg text-3xl mb-'>
         
-        return $stmt->execute([
-            ':id' => $id,
-            ':username' => $username,
-            ':email' => $email,
-            ':admin' => $isAdmin
-        ]);
-    }
+            <span>M</span>
+        </button>
 
-    // delete user
-    public function deleteUser($id) {
-        $sql = "DELETE FROM users WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
-    }
+      <h1 class="text-2xl font-bold text-black">SHOP WORLD</h1>
+      <nav class="space-x-4 flex items-center">
+        <a href="signin.php" class="text-sm text-gray-700 hover:text-black">Sign In</a>
+        <a href="signup.php" class="text-sm text-gray-700 hover:text-black">Sign Up</a>
 
-    // verifie if email exists
-    public function emailExists($email) {
-        $sql = "SELECT COUNT(*) FROM users WHERE email = :email";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([':email' => $email]);
-        return $stmt->fetchColumn() > 0;
-    }
+        <button class=" hover:text-black">
+            <a href="index.php">
+        <img src="Cart Button.png" alt="cart">
+        </a>
+        </button>
+      </nav>
+    </div>
+  </header>
 
-    // Verify user credentials
-    public function verifyUser($email, $password) {
-        $sql = "SELECT * FROM users WHERE email = :email";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([':email' => $email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($user && password_verify($password, $user['password'])) {
-            return $user;
-        }
-        return false;
-    }
+  <!-- Bar de recherch -->
+  <section class="max-w-7xl mx-auto px-4 py-6">
+    <form action="index.php" method="POST" class="flex flex-col sm:flex-row gap-4">
+      <input type="text" name="search" placeholder="Search products..." class="flex-1 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500" />
+      <button type="submit" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-500">Search</button>
+    </form>
+  </section>
 
-        // Compter tous les utilisateurs
-    public function countAllUsers() {
-        $sql = "SELECT COUNT(*) FROM users";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
-    }
+  <!--les Product -->
+  <main class="max-w-7xl mx-auto px-4 py-4">
+    <h2 class="text-xl font-semibold mb-6">Products</h2>
 
-    // Pagination utilisateurs
-    public function getUsersPaginated($limit, $offset) {
-        $sql = "SELECT * FROM users LIMIT :limit OFFSET :offset";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
 
-    // Modifier uniquement l'email d'un utilisateur
-    public function updateUserEmail($id, $email) {
-        $sql = "UPDATE users SET email = :email WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([':id' => $id, ':email' => $email]);
-    }
-}
-?>
+      <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="wooden_chair.jpg" alt="Wooden Chair" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Wooden Chair</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$40</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="arm_chair.jpg" alt="arm_chair" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Arm chair</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$150</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="table.jpg" alt="table" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Table</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$560</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="suit.jpg" alt="suit" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Suit</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$240</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="jean.jpg" alt="jean" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Jean trousers</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$75</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+        <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="t-shirt.jpg" alt="t-shirt" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">T-shirt</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$35</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition p-4">
+        <img src="shoes.jpg" alt="shoes" class="w-full h-48 object-cover rounded" />
+        <h3 class="mt-4 text-lg font-bold">Jordan 1</h3>
+        <p class="mt-2 text-gray-700 font-semibold">$175</p>
+        <button class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-500">Add to Cart</button>
+      </div>
+
+      
+    </div>
+  </main>
+
+
+  <footer class="bg-white mt-12 py-6 shadow-inner">
+    <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+      &copy; 2025 my_shop. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
