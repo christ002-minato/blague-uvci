@@ -12,22 +12,28 @@
   <header class="bg-white shadow-md">
 
 
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-
-                <button class=' bg-black  text-white font-bold  py-4 px-4 rounded-lg text-3xl mb-'>
-        
-            <span>M</span>
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-4 w-full sm:w-auto">
+        <button class='bg-black text-white font-bold py-4 px-4 rounded-lg text-3xl'>
+          <span>M</span>
         </button>
-
-      <h1 class="text-2xl font-bold text-black">SHOP WORLD</h1>
+        <h1 class="text-2xl font-bold text-black">SHOP WORLD</h1>
+        <form action="index.php" method="POST" class="hidden sm:block">
+          <select name="category" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <option value="">Catégorie</option>
+            <option value="meuble">Meuble</option>
+            <option value="vetement">Vêtement</option>
+            <option value="cosmetique">Cosmétique</option>
+          </select>
+        </form>
+      </div>
       <nav class="space-x-4 flex items-center">
         <a href="signin.php" class="text-sm text-gray-700 hover:text-black">Sign In</a>
         <a href="signup.php" class="text-sm text-gray-700 hover:text-black">Sign Up</a>
-
-        <button class=" hover:text-black">
-            <a href="index.php">
-        <img src="Cart Button.png" alt="cart">
-        </a>
+        <button class="hover:text-black">
+          <a href="index.php">
+            <img src="Cart Button.png" alt="cart">
+          </a>
         </button>
       </nav>
     </div>
@@ -35,8 +41,14 @@
 
   <!-- Bar de recherch -->
   <section class="max-w-7xl mx-auto px-4 py-6">
-    <form action="index.php" method="POST" class="flex flex-col sm:flex-row gap-4">
+    <form action="index.php" method="POST" class="flex flex-col sm:flex-row gap-4 items-center">
       <input type="text" name="search" placeholder="Search products..." class="flex-1 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500" />
+      <select name="category" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500">
+        <option value="">All Categories</option>
+        <option value="meuble">Meuble</option>
+        <option value="vetement">Vêtement</option>
+        <option value="cosmetique">Cosmétique</option>
+      </select>
       <button type="submit" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-500">Search</button>
     </form>
   </section>
