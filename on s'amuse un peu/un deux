@@ -1,157 +1,93 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Page boutique - Living room" />
-  <title>Living room – Boutique</title>
+    // Compter tous les produits
+    public function countAllProducts() {
+        $sql = "SELECT COUNT(*) FROM products";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
 
-  
-  
+    // Pagination produits
+    public function getProductsPaginated($limit, $offset) {
+        $sql = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+<?php
+require_once "db_connect.php";
 
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- ===== HEADER ===== -->
-  <header class="header">
-    <div class="logo">
-                <img src="Logo.png" alt="Logo">
-            </div>
+class Product {
+    private $conn;
 
-    <a href="#" class="logo" aria-label="Accueil (Logo)">
-      <!-- Mets ton logo ici -->
-      LOGO
-    </a>
+    public function __construct() {
+        $db = new Database();
+        $this->conn = $db->db_connect();
+    }
 
-    <nav class="main-nav" aria-label="Navigation principale">
-      <ul class="nav-list">
-        <li><a href="#">HOME</a></li>
-        <li><a href="#">SHOP</a></li>
-        <li><a href="#">MAGAZINE</a></li>
-      </ul>
-    </nav>
+    // create a new product
+    public function createProduct($name, $price, $category_id, $description = '', $image = '') {
+        $sql = "INSERT INTO products (name, price, category_id, description, image) 
+                VALUES (:name, :price, :category_id, :description, :image)";
+        $stmt = $this->conn->prepare($sql);
+        
+        return $stmt->execute([
+            ':name' => $name,
+            ':price' => $price,
+            ':category_id' => $category_id,
+            ':description' => $description,
+            ':image' => $image
+        ]);
+    }
 
-    <div class="header-right">
-      <a href="#" class="login-link">LOGIN</a>
-      <a href="#" class="cart" aria-label="Panier">🛒</a>
-    </div>
-  </header>
+    // prendre tous all products
+    public function getAllProducts() {
+        $sql = "SELECT p.*, c.name as category_name 
+                FROM products p 
+                LEFT JOIN categories c ON p.category_id = c.id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-  <!-- ===== BARRE DE RECHERCHE + TRI ===== -->
-  <section class="topbar" aria-labelledby="search-title">
-    <div class="search">
-      <label for="search-input" id="search-title" class="visually-hidden">Recherche</label>
-      <span class="search-icon">🔍</span>
-      <input id="search-input" type="text" placeholder="living room" />
-      <span class="powered">Powered by Algolia</span>
-      <button class="settings" aria-label="Réglages">⚙️</button>
-    </div>
+    // prndre product by ID
+    public function getProductById($id) {
+        $sql = "SELECT p.*, c.name as category_name 
+                FROM products p 
+                LEFT JOIN categories c ON p.category_id = c.id 
+                WHERE p.id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    <div class="sort">
-      <label for="sort-select">Best match</label>
-      <select id="sort-select">
-        <option>Best match</option>
-        <option>Price: low to high</option>
-        <option>Price: high to low</option>
-        <option>Newest</option>
-      </select>
-    </div>
-  </section>
+    // ajouter product
+    public function updateProduct($id, $name, $price, $category_id, $description = '', $image = '') {
+        $sql = "UPDATE products SET 
+                name = :name, 
+                price = :price, 
+                category_id = :category_id, 
+                description = :description, 
+                image = :image 
+                WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        
+        return $stmt->execute([
+            ':id' => $id,
+            ':name' => $name,
+            ':price' => $price,
+            ':category_id' => $category_id,
+            ':description' => $description,
+            ':image' => $image
+        ]);
+    }
 
-  <!-- ===== CONTENU PRINCIPAL ===== -->
-  <main class="layout">
-    <!-- ==== FILTRES ==== -->
-    <aside class="filters" aria-label="Filtres">
-      <h2 class="filters-title">FILTER BY</h2>
-
-      <details class="filter">
-        <summary>Collection</summary>
-        <ul class="filter-list">
-          <li><label><input type="checkbox" /> Modern</label></li>
-          <li><label><input type="checkbox" /> Classic</label></li>
-        </ul>
-      </details>
-
-      <details class="filter">
-        <summary>Color</summary>
-        <ul class="filter-list">
-          <li><label><input type="checkbox" /> White</label></li>
-          <li><label><input type="checkbox" /> Black</label></li>
-        </ul>
-      </details>
-
-      <details class="filter">
-        <summary>Category</summary>
-        <ul class="filter-list">
-          <li><label><input type="checkbox" /> Chair</label></li>
-          <li><label><input type="checkbox" /> Shelves</label></li>
-        </ul>
-      </details>
-
-      <details class="filter">
-        <summary>Price Range</summary>
-        <div class="price-range">
-          <span>$0</span>
-          <input type="range" min="0" max="10000" />
-          <span>$10,000+</span>
-        </div>
-      </details>
-    </aside>
-
-    <!-- ==== GRILLE PRODUITS ==== -->
-    <section class="products" aria-label="Liste des produits">
-      <!-- Une carte produit = 1 .card -->
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/img/product-1.jpg" alt="Coombes" />
-        </div>
-        <div class="card-info">
-          <div class="title-price">
-            <h3 class="title">Coombes</h3>
-            <span class="price">$2,600</span>
-          </div>
-          <p class="category">Lounge</p>
-          <div class="meta">
-          <span class="stars" aria-label="5 étoiles">★★★★★</span>
-            <button class="add-to-cart" aria-label="Ajouter au panier">🛒</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Duplique les cartes ci-dessous pour tous tes produits -->
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/img/product-2.jpg" alt="Keeve Set" />
-        </div>
-        <div class="card-info">
-          <div class="title-price">
-            <h3 class="title">Keeve Set</h3>
-            <span class="price">$590</span>
-          </div>
-          <p class="category">Table & Chairs</p>
-          <div class="meta">
-            <span class="stars" aria-label="5 étoiles">★★★★★</span>
-            <button class="add-to-cart" aria-label="Ajouter au panier">🛒</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- ... autres produits ... -->
-    </section>
-  </main>
-
-  <!-- ===== PAGINATION ===== -->
-  <nav class="pagination" aria-label="Pagination">
-    <ul>
-      <li><a class="active" href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><span>…</span></li>
-      <li><a href="#">10</a></li>
-      <li><a href="#" aria-label="Page suivante">&gt;</a></li>
-    </ul>
-  </nav>
-</body>
-</html>
+    // effacer product
+    public function deleteProduct($id) {
+        $sql = "DELETE FROM products WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+}
+?>
