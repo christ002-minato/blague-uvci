@@ -234,6 +234,31 @@ class AnnonceController extends Controller
             @endforelse
             </tbody>
 
+
+            🔧 Option 3 : Rendre user_id nullable (pas recommandé en production)
+Si tu veux vraiment désactiver la contrainte pour tes tests (⚠️ à éviter en production), modifie ta migration annonces pour que user_id soit nullable :
+
+php
+Copier
+Modifier
+$table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+Puis refais une migration :
+
+bash
+Copier
+Modifier
+php artisan migrate:fresh --seed
+⚠️ Cela efface toutes les données de la base !
+
+✅ Et après les tests ?
+Quand tu passeras à une vraie utilisation, tu remettras :
+
+php
+Copier
+Modifier
+$user->user_id = Auth::id();
+et tu mettras en place le système d'authentification (login/register) avec un middleware auth.
+
         </table>
 
        {{-- {!! $annonces->links() !!} --}}
