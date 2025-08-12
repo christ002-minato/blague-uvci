@@ -1,81 +1,108 @@
-SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'user_id' cannot be null
-signifie que, lorsque tu fais :
+Attempt to read property "name" on null
+GET 127.0.0.1:8001
+PHP 8.4.1 — Laravel 12.21.0
+resources/views/welcome.blade.php :33
 
-php
-Copier
-Modifier
-$validated['user_id'] = Auth::id();
-Annonce::create($validated);
-Auth::id() retourne null, donc Laravel essaie d’insérer NULL dans la colonne user_id qui est NOT NULL dans ta base MySQL.
+<!-- Navigation Menu -->
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <!-- Primary Navigation Menu -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <x-application-mark class="block h-9 w-auto" />
+                    </a>
+                </div>
 
-En clair : ton utilisateur n’est pas authentifié au moment où la méthode store() est appelée.
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <!-- Dashboard -->
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
 
-Pourquoi ça arrive
-Aucun utilisateur connecté : tu n’es pas passé par un login avant d’accéder à la route annonces.store.
+                    <!-- Annonces -->
+                    <x-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
+                        {{ __('Annonces') }}
+                    </x-nav-link>
+                </div>
+            </div>
 
-Middleware manquant : ta route d’insertion d’annonce n’est pas protégée par auth → Laravel ne sait pas qui est connecté.
+            <!-- Settings Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                            <div>{{ Auth::user()->name }}</div>
 
-Problème de guard : si tu utilises plusieurs systèmes d’authentification, Auth::id() peut renvoyer null parce que tu interroges le mauvais guard.
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
 
-Session perdue : par exemple si tu postes depuis un autre domaine ou si la session n’est pas conservée.
+                    <x-slot name="content">
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+            </div>
 
-Vérifications rapides
-Ajoute un dd() pour voir
+            <!-- Hamburger -->
+            <div class="-me-2 flex items-center sm:hidden">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
-php
-Copier
-Modifier
-dd(Auth::id(), Auth::user());
-juste avant :
+    <!-- Responsive Navigation Menu -->
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <!-- Dashboard -->
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
 
-php
-Copier
-Modifier
-$validated['user_id'] = Auth::id();
-→ si tu obtiens null, c’est bien un souci d’authentification.
+            <!-- Annonces -->
+            <x-responsive-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
+                {{ __('Annonces') }}
+            </x-responsive-nav-link>
+        </div>
 
-Vérifie tes routes
-Dans routes/web.php :
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
 
-php
-Copier
-Modifier
-Route::middleware(['auth'])->group(function () {
-    Route::resource('annonces', AnnonceController::class);
-});
-ou au moins :
-
-php
-Copier
-Modifier
-Route::post('/annonces', [AnnonceController::class, 'store'])->middleware('auth');
-Vérifie que tu es connecté
-Si tu utilises Laravel Breeze, Jetstream ou autre : assure-toi de bien être loggé via /login.
-
-Correction
-Solution rapide : protéger la route avec auth et t’assurer que tu es connecté avant d’insérer.
-
-Solution de secours (à éviter en prod) : permettre user_id NULL en base et gérer autrement, mais ça brise la logique d’appartenance des annonces.
-
-Vu que tu es en Laravel 12 et que ton erreur est sur store(), je te conseille d’abord de mettre :
-
-php
-Copier
-Modifier
-public function __construct()
-{
-    $this->middleware('auth');
-}
-dans ton AnnonceController.
-Ça évitera que store() soit appelé sans utilisateur connecté.
-
-Si tu veux, je peux te montrer comment corriger ta migration et ton modèle pour forcer le lien avec l’utilisateur connecté afin d’éviter ce genre d’erreur définitivement.
-Veux-tu que je te prépare ça ?
-
-
-
-
-
-
-
-
+            <div class="mt-3 space-y-1">
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
