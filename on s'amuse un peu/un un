@@ -1,8 +1,3 @@
-syntax error, unexpected end of file, expecting "elseif" or "else" or "endif"
-GET 127.0.0.1:8000
-PHP 8.4.1 — Laravel 12.21.0
-resources/views/auth/register.blade.php :39
-
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
@@ -14,31 +9,80 @@ resources/views/auth/register.blade.php :39
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
+            {{-- Nom complet --}}
             <div>
-                {{-- . ici travail d'Amalaman . --}}
+                {{-- ici travail d'Amalaman --}}
                 <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-input id="name" class="block mt-1 w-full"
+                         type="text"
+                         name="name"
+                         :value="old('name')"
+                         required autofocus autocomplete="name" />
             </div>
 
+            {{-- Login --}}
             <div class="mt-4">
-                {{-- . ici travail d'Amalaman . --}}
+                {{-- ici travail d'Amalaman --}}
                 <x-label for="login" value="{{ __('Login') }}" />
-                <x-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required autocomplete="login" />
+                <x-input id="login" class="block mt-1 w-full"
+                         type="text"
+                         name="login"
+                         :value="old('login')"
+                         required autocomplete="username" />
             </div>
 
+            {{-- Email --}}
             <div class="mt-4">
-                {{-- . ici travail de Olivia . --}}
+                {{-- ici travail de Olivia --}}
                 <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                <x-input id="email" class="block mt-1 w-full"
+                         type="email"
+                         name="email"
+                         :value="old('email')"
+                         required autocomplete="username" />
             </div>
 
+            {{-- Numéro de téléphone --}}
             <div class="mt-4">
-                {{-- . ici travail d'Amalaman . --}}
+                {{-- ici travail d'Amalaman --}}
                 <x-label for="phonenumber" value="{{ __('Phone Number') }}" />
-                <x-input id="phonenumber" class="block mt-1 w-full" type="text" name="phonenumber" :value="old('phonenumber')" required autocomplete="tel" />
+                <x-input id="phonenumber" class="block mt-1 w-full"
+                         type="text"
+                         name="phonenumber"
+                         :value="old('phonenumber')"
+                         required autocomplete="tel" />
             </div>
 
+            {{-- Mot de passe --}}
             <div class="mt-4">
-                {{-- . ici travail de Olivia . --}}
+                {{-- ici travail de Olivia --}}
                 <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="
+                <x-input id="password" class="block mt-1 w-full"
+                         type="password"
+                         name="password"
+                         required autocomplete="new-password" />
+            </div>
+
+            {{-- Confirmation du mot de passe --}}
+            <div class="mt-4">
+                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-input id="password_confirmation" class="block mt-1 w-full"
+                         type="password"
+                         name="password_confirmation"
+                         required autocomplete="new-password" />
+            </div>
+
+            {{-- Bouton et lien login --}}
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                   href="{{ route('login') }}">
+                    {{ __('Already registered?') }}
+                </a>
+
+                <x-button class="ml-4">
+                    {{ __('Register') }}
+                </x-button>
+            </div>
+        </form>
+    </x-authentication-card>
+</x-guest-layout>
