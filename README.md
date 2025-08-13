@@ -1,108 +1,129 @@
-Attempt to read property "name" on null
-GET 127.0.0.1:8001
-PHP 8.4.1 — Laravel 12.21.0
-resources/views/welcome.blade.php :33
+exo 4 $(document).ready(function() {
+    $("a:not([target='blank'])").css("opacity", "0.5");
+});
 
-<!-- Navigation Menu -->
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div>
+$(document).ready(function() {
+    $("ul:first li:first").hide();
+});
+exo 7
+$(document).ready(function() {
+    $("p").on({
+        mouseenter: function() {
+            $(this).css("background-color", "lightgray");
+        },
+        mouseleave: function() {
+            $(this).css("background-color", "white");
+        },
+        click: function() {
+            $(this).hide();
+        }
+    });
+});
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <!-- Dashboard -->
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+$(document).ready(function() {
+    $("button").click(function() {
+        $("#menu").toggle();
+    });
+});
 
-                    <!-- Annonces -->
-                    <x-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
-                        {{ __('Annonces') }}
-                    </x-nav-link>
-                </div>
-            </div>
+$(document).ready(function() {
+    $(".platypus").click(function() {
+        $(this).animate({
+            left: "+=150px",
+            top: "+=200px",
+            backgroundColor: "green"
+        }, 1000); // durée 1 seconde
+    });
+});
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                            <div>{{ Auth::user()->name }}</div>
+$(document).ready(function() {
+    $(".test").hide(500, function() {
+        alert("The paragraph is now hidden.");
+    });
+});
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
 
-                    <x-slot name="content">
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+$(document).ready(function() {
+    $("button").click(function() {
+        let value = $("#listItem").val(); // récupérer la valeur
+        if (value.trim() !== "") { // éviter vide
+            $("#listItem").after(`<div>${value}</div>`);
+            $("#listItem").val(""); // vider le champ
+        }
+    });
+});
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
+$(document).ready(function() {
+    $("img:first").before("<p>Wow, I precede the image!</p>");
+    $("img:first").after("<p>Hey, I come in last</p>");
+});
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <!-- Dashboard -->
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
 
-            <!-- Annonces -->
-            <x-responsive-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
-                {{ __('Annonces') }}
-            </x-responsive-nav-link>
-        </div>
+$(document).ready(function() {
+    $("p.test, p.platypus").remove();
+});
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
 
-            <div class="mt-3 space-y-1">
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+$(document).ready(function() {
+    $("p").hover(
+        function() {
+            $(this).addClass("blue");
+        },
+        function() {
+            $(this).removeClass("blue");
+        }
+    );
+
+    $("p").click(function() {
+        $(this).toggleClass("highlighted");
+    });
+});
+
+
+// Fonction fléchée ES6
+const makeBlue = () => {
+    const element = document.querySelector(".platypus"); // premier élément
+    if (element) {
+        element.style.backgroundColor = "blue";
+    }
+};
+
+makeBlue();
+
+
+// Fonction fléchée ES6 avec valeur par défaut
+const setPlatypusColor = (hexColor = "#FFC0CB") => { // rose par défaut
+    const element = document.querySelector(".platypus");
+    if (element) {
+        element.style.backgroundColor = hexColor;
+    }
+};
+
+// Exemple d'appel avec couleur personnalisée
+setPlatypusColor("#00FF00"); // vert
+
+
+class Glop {
+    constructor(color) {
+        console.log("Bwello");
+        this.color = color;
+    }
+
+    applyColor(element) {
+        element.style.color = this.color;
+    }
+
+    destroy() {
+        console.log("Boodnight");
+    }
+}
+
+// Création d'un Glop avec couleur rouge
+const myGlop = new Glop("#FF0000");
+
+document.querySelectorAll("p").forEach(paragraph => {
+    paragraph.addEventListener("click", () => {
+        myGlop.applyColor(paragraph);
+    });
+});
+
