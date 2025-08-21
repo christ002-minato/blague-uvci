@@ -1,129 +1,88 @@
-exo 4 $(document).ready(function() {
-    $("a:not([target='blank'])").css("opacity", "0.5");
-});
+Super bonne question 🙌 ! Si tu veux vraiment **comprendre Vue Options API**, il te faut un mélange de docs officielles, tutos clairs, et projets pratiques. Voilà ce que je te propose comme **chemin d’apprentissage** :
 
-$(document).ready(function() {
-    $("ul:first li:first").hide();
-});
-exo 7
-$(document).ready(function() {
-    $("p").on({
-        mouseenter: function() {
-            $(this).css("background-color", "lightgray");
-        },
-        mouseleave: function() {
-            $(this).css("background-color", "white");
-        },
-        click: function() {
-            $(this).hide();
-        }
-    });
-});
+---
 
-$(document).ready(function() {
-    $("button").click(function() {
-        $("#menu").toggle();
-    });
-});
+## 📘 1. Documentation officielle
 
-$(document).ready(function() {
-    $(".platypus").click(function() {
-        $(this).animate({
-            left: "+=150px",
-            top: "+=200px",
-            backgroundColor: "green"
-        }, 1000); // durée 1 seconde
-    });
-});
+* **Vue.js Options API Guide** :
+  👉 [https://vuejs.org/guide/introduction.html#api-styles](https://vuejs.org/guide/introduction.html#api-styles)
+  La doc Vue explique la différence entre Options API et Composition API.
+  Lis surtout :
 
-$(document).ready(function() {
-    $(".test").hide(500, function() {
-        alert("The paragraph is now hidden.");
-    });
-});
+  * `data()`
+  * `props`
+  * `methods`
+  * `computed`
+  * `watch`
+  * `lifecycle hooks` (mounted, created…)
 
+*(Prends ton temps, essaie de comprendre avec de petits exemples.)*
 
-$(document).ready(function() {
-    $("button").click(function() {
-        let value = $("#listItem").val(); // récupérer la valeur
-        if (value.trim() !== "") { // éviter vide
-            $("#listItem").after(`<div>${value}</div>`);
-            $("#listItem").val(""); // vider le champ
-        }
-    });
-});
+---
 
-$(document).ready(function() {
-    $("img:first").before("<p>Wow, I precede the image!</p>");
-    $("img:first").after("<p>Hey, I come in last</p>");
-});
+## 🎥 2. Vidéos pédagogiques
 
+* **Vue.js 3 Options API Crash Course** (Traversy Media, en anglais) :
+  👉 YouTube : *“Vue 3 Crash Course Options API”*
+  Très clair, pratique et rapide.
+* En français :
+  👉 CodeConcept, Grafikart ou From Scratch ont des séries vidéos sur Vue.js avec Options API.
 
-$(document).ready(function() {
-    $("p.test, p.platypus").remove();
-});
+---
 
+## 📑 3. Articles & blogs clairs
 
-$(document).ready(function() {
-    $("p").hover(
-        function() {
-            $(this).addClass("blue");
-        },
-        function() {
-            $(this).removeClass("blue");
-        }
-    );
+* "Vue 3 Options API Basics" sur [Vue Mastery blog](https://www.vuemastery.com/blog/)
+* Grafikart (FR) : [https://grafikart.fr/formations/vuejs](https://grafikart.fr/formations/vuejs)
+  Il explique Vue étape par étape (Options API inclus).
 
-    $("p").click(function() {
-        $(this).toggleClass("highlighted");
-    });
-});
+---
 
+## 🛠️ 4. Exercices pratiques (ce qui te fera VRAIMENT comprendre)
 
-// Fonction fléchée ES6
-const makeBlue = () => {
-    const element = document.querySelector(".platypus"); // premier élément
-    if (element) {
-        element.style.backgroundColor = "blue";
-    }
-};
+1. Crée un petit **compteur** :
 
-makeBlue();
+   ```vue
+   <template>
+     <div>
+       <p>Compteur : {{ count }}</p>
+       <button @click="count++">+1</button>
+     </div>
+   </template>
 
+   <script>
+   export default {
+     data() {
+       return { count: 0 }
+     }
+   }
+   </script>
+   ```
 
-// Fonction fléchée ES6 avec valeur par défaut
-const setPlatypusColor = (hexColor = "#FFC0CB") => { // rose par défaut
-    const element = document.querySelector(".platypus");
-    if (element) {
-        element.style.backgroundColor = hexColor;
-    }
-};
+2. Fais une **todo list** simple (ajout/suppression).
 
-// Exemple d'appel avec couleur personnalisée
-setPlatypusColor("#00FF00"); // vert
+3. Intègre une **API publique** (ex. Pokémon API ou JSONPlaceholder) et affiche les données.
 
+Chaque petit projet va t’entraîner à manipuler **data, methods, props, lifecycle hooks**.
 
-class Glop {
-    constructor(color) {
-        console.log("Bwello");
-        this.color = color;
-    }
+---
 
-    applyColor(element) {
-        element.style.color = this.color;
-    }
+## 📚 5. Résumé en logique simple
 
-    destroy() {
-        console.log("Boodnight");
-    }
-}
+* **data()** → ton "state" local (variables réactives).
+* **props** → infos que le parent envoie à l’enfant.
+* **methods** → tes fonctions/actions.
+* **computed** → calculs automatiques à partir de `data`.
+* **watch** → surveille une variable et réagit à ses changements.
+* **mounted()** → code lancé quand le composant est affiché.
 
-// Création d'un Glop avec couleur rouge
-const myGlop = new Glop("#FF0000");
+---
 
-document.querySelectorAll("p").forEach(paragraph => {
-    paragraph.addEventListener("click", () => {
-        myGlop.applyColor(paragraph);
-    });
-});
+👉 Donc je te conseille :
 
+1. Lire la doc officielle (Options API de base).
+2. Suivre une vidéo complète (Grafikart FR ou Traversy EN).
+3. Faire 2-3 mini projets comme compteur + todo list.
+4. Puis appliquer ça directement dans **Louane** 💡.
+
+Veux-tu que je te prépare un **plan d’entraînement de 1 semaine** (petits exos chaque jour) pour bien comprendre Options API avant d’attaquer Louane à fond ?
