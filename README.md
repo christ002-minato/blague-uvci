@@ -1,88 +1,102 @@
-Super bonne question 🙌 ! Si tu veux vraiment **comprendre Vue Options API**, il te faut un mélange de docs officielles, tutos clairs, et projets pratiques. Voilà ce que je te propose comme **chemin d’apprentissage** :
+Très bon choix 🚀 ! Flowbite est fait exprès pour fonctionner **avec TailwindCSS**, donc ça va bien s’intégrer dans ton projet Louane. Je vais te guider étape par étape pour que ton calendrier s’affiche **correctement et responsive**.
 
 ---
 
-## 📘 1. Documentation officielle
+## 🛠 Étape 1 – Installer Flowbite
 
-* **Vue.js Options API Guide** :
-  👉 [https://vuejs.org/guide/introduction.html#api-styles](https://vuejs.org/guide/introduction.html#api-styles)
-  La doc Vue explique la différence entre Options API et Composition API.
-  Lis surtout :
+Si tu as installé Tailwind via `npm`, ajoute Flowbite aussi :
 
-  * `data()`
-  * `props`
-  * `methods`
-  * `computed`
-  * `watch`
-  * `lifecycle hooks` (mounted, created…)
-
-*(Prends ton temps, essaie de comprendre avec de petits exemples.)*
+```bash
+npm install flowbite
+```
 
 ---
 
-## 🎥 2. Vidéos pédagogiques
+## 🛠 Étape 2 – Configurer Tailwind pour inclure Flowbite
 
-* **Vue.js 3 Options API Crash Course** (Traversy Media, en anglais) :
-  👉 YouTube : *“Vue 3 Crash Course Options API”*
-  Très clair, pratique et rapide.
-* En français :
-  👉 CodeConcept, Grafikart ou From Scratch ont des séries vidéos sur Vue.js avec Options API.
+Dans ton fichier **tailwind.config.js** ajoute `flowbite` dans `content` et `plugins` :
 
----
+```js
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    require('flowbite/plugin')
+  ],
+}
+```
 
-## 📑 3. Articles & blogs clairs
-
-* "Vue 3 Options API Basics" sur [Vue Mastery blog](https://www.vuemastery.com/blog/)
-* Grafikart (FR) : [https://grafikart.fr/formations/vuejs](https://grafikart.fr/formations/vuejs)
-  Il explique Vue étape par étape (Options API inclus).
-
----
-
-## 🛠️ 4. Exercices pratiques (ce qui te fera VRAIMENT comprendre)
-
-1. Crée un petit **compteur** :
-
-   ```vue
-   <template>
-     <div>
-       <p>Compteur : {{ count }}</p>
-       <button @click="count++">+1</button>
-     </div>
-   </template>
-
-   <script>
-   export default {
-     data() {
-       return { count: 0 }
-     }
-   }
-   </script>
-   ```
-
-2. Fais une **todo list** simple (ajout/suppression).
-
-3. Intègre une **API publique** (ex. Pokémon API ou JSONPlaceholder) et affiche les données.
-
-Chaque petit projet va t’entraîner à manipuler **data, methods, props, lifecycle hooks**.
+Puis relance ton serveur (`npm run dev`) pour que Tailwind prenne en compte Flowbite.
 
 ---
 
-## 📚 5. Résumé en logique simple
+## 🛠 Étape 3 – Importer Flowbite dans ton projet
 
-* **data()** → ton "state" local (variables réactives).
-* **props** → infos que le parent envoie à l’enfant.
-* **methods** → tes fonctions/actions.
-* **computed** → calculs automatiques à partir de `data`.
-* **watch** → surveille une variable et réagit à ses changements.
-* **mounted()** → code lancé quand le composant est affiché.
+Dans ton **main.js** (ou `main.ts` si tu utilises TypeScript) :
+
+```js
+import 'flowbite';
+```
 
 ---
 
-👉 Donc je te conseille :
+## 🛠 Étape 4 – Ajouter le Datepicker Flowbite dans ton composant
 
-1. Lire la doc officielle (Options API de base).
-2. Suivre une vidéo complète (Grafikart FR ou Traversy EN).
-3. Faire 2-3 mini projets comme compteur + todo list.
-4. Puis appliquer ça directement dans **Louane** 💡.
+Par exemple dans `NoteCode.vue` à la place de ton calendrier maison :
 
-Veux-tu que je te prépare un **plan d’entraînement de 1 semaine** (petits exos chaque jour) pour bien comprendre Options API avant d’attaquer Louane à fond ?
+```vue
+<template>
+  <div class="bg-white shadow rounded-lg p-4">
+    <h3 class="text-lg font-bold mb-2">Calendrier</h3>
+
+    <!-- Flowbite Datepicker -->
+    <div date-rangepicker class="flex items-center">
+      <div class="relative">
+        <input 
+          name="start"
+          type="text"
+          class="datepicker-input border rounded-lg p-2 w-full"
+          placeholder="Sélectionner une date"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+Flowbite va automatiquement transformer l’`<input>` en un calendrier interactif. 🎉
+
+---
+
+## 🛠 Étape 5 – Rendre le calendrier responsive
+
+Flowbite utilise déjà Tailwind, donc pour rendre ton calendrier bien **adapté aux petits écrans**, ajoute des classes responsive. Exemple :
+
+```vue
+<div class="w-full md:w-80">
+  <input 
+    name="date"
+    type="text"
+    class="datepicker-input w-full border rounded-lg p-2"
+    placeholder="Choisir une date"
+  />
+</div>
+```
+
+* Sur mobile → il prend toute la largeur (`w-full`).
+* Sur desktop → largeur fixe (`md:w-80`).
+
+---
+
+✅ Résultat :
+Ton calendrier Flowbite s’affichera dans ton layout (sidebar + notes + footer) **proprement et responsivement**, sans casser ton design.
+
+---
+
+👉 Veux-tu que je t’intègre directement ce **datepicker Flowbite** dans ton layout actuel (Home + NoteCode) pour que tu voies comment il s’affiche dans ta grille avec les notes et la sidebar ?
