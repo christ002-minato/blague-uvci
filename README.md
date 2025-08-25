@@ -1,102 +1,155 @@
-Très bon choix 🚀 ! Flowbite est fait exprès pour fonctionner **avec TailwindCSS**, donc ça va bien s’intégrer dans ton projet Louane. Je vais te guider étape par étape pour que ton calendrier s’affiche **correctement et responsive**.
+Ah je comprends 👍 tu veux des **questions-réponses plus techniques**, centrées sur la **logique du code** (Axios, Pinia, Router, liens dynamiques, etc.), plutôt que théoriques.
+
+Voici une fiche adaptée :
 
 ---
 
-## 🛠 Étape 1 – Installer Flowbite
+# 📋 Fiche Questions / Réponses – Logique du Code (Vue.js, Axios, Pinia)
 
-Si tu as installé Tailwind via `npm`, ajoute Flowbite aussi :
+---
 
-```bash
-npm install flowbite
+### **Q1.** Comment fait-on un appel API avec Axios pour récupérer tous les utilisateurs depuis `/api/users` ?
+
+**R :**
+
+```js
+const response = await axios.get("/api/users");
+console.log(response.data);
 ```
 
 ---
 
-## 🛠 Étape 2 – Configurer Tailwind pour inclure Flowbite
+### **Q2.** Comment envoie-t-on un nouvel utilisateur à l’API avec Axios (méthode POST) ?
 
-Dans ton fichier **tailwind.config.js** ajoute `flowbite` dans `content` et `plugins` :
+**R :**
 
 ```js
-module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "./node_modules/flowbite/**/*.js"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    require('flowbite/plugin')
-  ],
+await axios.post("/api/users", {
+  name: "Louane",
+  email: "louane@example.com"
+});
+```
+
+---
+
+### **Q3.** Quelle est la différence entre `axios.put()` et `axios.patch()` ?
+
+**R :**
+
+* `PUT` remplace complètement une ressource.
+* `PATCH` ne met à jour que les champs envoyés.
+
+---
+
+### **Q4.** Comment supprimer un utilisateur avec Axios dont l’id est `5` ?
+
+**R :**
+
+```js
+await axios.delete(`/api/users/5`);
+```
+
+---
+
+### **Q5.** Comment gérer les erreurs lors d’un appel API avec Axios ?
+
+**R :**
+
+```js
+try {
+  const res = await axios.get("/api/users");
+} catch (error) {
+  console.error("Erreur API :", error);
 }
 ```
 
-Puis relance ton serveur (`npm run dev`) pour que Tailwind prenne en compte Flowbite.
+---
+
+### **Q6.** Comment créer un lien dynamique vers un profil utilisateur avec Vue Router ?
+
+**R :**
+
+```vue
+<router-link :to="`/user/${user.id}`">
+  Voir profil de {{ user.name }}
+</router-link>
+```
 
 ---
 
-## 🛠 Étape 3 – Importer Flowbite dans ton projet
+### **Q7.** Comment récupérer l’id dynamique d’une route dans un composant Vue ?
 
-Dans ton **main.js** (ou `main.ts` si tu utilises TypeScript) :
+**R :**
 
 ```js
-import 'flowbite';
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+console.log(route.params.id); // l’id passé dans l’URL
 ```
 
 ---
 
-## 🛠 Étape 4 – Ajouter le Datepicker Flowbite dans ton composant
+### **Q8.** Comment connecter un store Pinia pour gérer une liste d’articles et la remplir via Axios ?
 
-Par exemple dans `NoteCode.vue` à la place de ton calendrier maison :
+**R :**
+
+```js
+import { defineStore } from "pinia";
+import axios from "axios";
+
+export const useArticleStore = defineStore("articles", {
+  state: () => ({ articles: [] }),
+  actions: {
+    async fetchArticles() {
+      const res = await axios.get("/api/articles");
+      this.articles = res.data;
+    }
+  }
+});
+```
+
+---
+
+### **Q9.** Quelle est la logique pour afficher une liste récupérée via Axios dans un composant Vue ?
+
+**R :**
+
+1. Appeler la fonction du store ou du composant pour récupérer les données.
+2. Stocker les résultats dans une variable réactive.
+3. Utiliser une boucle `v-for` dans le template pour afficher la liste.
+
+Exemple :
 
 ```vue
-<template>
-  <div class="bg-white shadow rounded-lg p-4">
-    <h3 class="text-lg font-bold mb-2">Calendrier</h3>
-
-    <!-- Flowbite Datepicker -->
-    <div date-rangepicker class="flex items-center">
-      <div class="relative">
-        <input 
-          name="start"
-          type="text"
-          class="datepicker-input border rounded-lg p-2 w-full"
-          placeholder="Sélectionner une date"
-        />
-      </div>
-    </div>
-  </div>
-</template>
+<ul>
+  <li v-for="item in articles" :key="item.id">{{ item.name }}</li>
+</ul>
 ```
 
-Flowbite va automatiquement transformer l’`<input>` en un calendrier interactif. 🎉
+---
+
+### **Q10.** Quelle est la différence entre utiliser Fetch et Axios dans la logique de code Vue.js ?
+
+**R :**
+
+* Avec Fetch :
+
+  ```js
+  const res = await fetch("/api/users");
+  const data = await res.json();
+  ```
+* Avec Axios :
+
+  ```js
+  const res = await axios.get("/api/users");
+  const data = res.data;
+  ```
+
+👉 Axios réduit les lignes de code et gère mieux les erreurs et headers.
 
 ---
 
-## 🛠 Étape 5 – Rendre le calendrier responsive
+⚡ Cette fiche est bien **orientée pratique**, comme si tu testais la compréhension des étudiants sur la logique du code.
 
-Flowbite utilise déjà Tailwind, donc pour rendre ton calendrier bien **adapté aux petits écrans**, ajoute des classes responsive. Exemple :
-
-```vue
-<div class="w-full md:w-80">
-  <input 
-    name="date"
-    type="text"
-    class="datepicker-input w-full border rounded-lg p-2"
-    placeholder="Choisir une date"
-  />
-</div>
-```
-
-* Sur mobile → il prend toute la largeur (`w-full`).
-* Sur desktop → largeur fixe (`md:w-80`).
-
----
-
-✅ Résultat :
-Ton calendrier Flowbite s’affichera dans ton layout (sidebar + notes + footer) **proprement et responsivement**, sans casser ton design.
-
----
-
-👉 Veux-tu que je t’intègre directement ce **datepicker Flowbite** dans ton layout actuel (Home + NoteCode) pour que tu voies comment il s’affiche dans ta grille avec les notes et la sidebar ?
+Veux-tu que je te prépare aussi une **mini-série d’exercices pratiques** (par ex. compléter du code Axios manquant, corriger un appel API, etc.) pour compléter cette fiche Q/R ?
